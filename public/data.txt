@@ -1,0 +1,107 @@
+client to server:
+
+startRoundClicked()
+{
+	'command':'GMcommand',
+	'GMaction':'startRound',
+	'guessers':guessers # a number or a list of names
+}
+
+endRoundClicked()
+{
+	'command':'GMcommand',
+	'GMaction':'endRound'
+}
+
+increment or decrement userScore
+{
+	'command':'GMcommand',
+	'GMaction':'changePoints',
+	'name':playerName,
+	'points': -1 or 1
+}
+
+written: setName
+{
+	'command':'introduction',
+	'name':playerName
+}
+
+written: setTopic
+{
+	'command':'topic',
+	'topic':topic
+}
+
+___________________________________________
+server to client:
+
+endRoundForAllPlayers()
+{
+	'message':'endRound'
+}
+
+setAllActivePlayersAndTopic()
+{
+	'message':'startRound',
+	'guessers':guessers,
+	'topic':topic
+}
+
+written: setTopics
+{
+	'message':'topics',
+	'topics':player.topics
+}
+
+written: setPlayers
+{
+	'message':'players',
+	'players':playerList
+}
+
+message = {
+  'message':'playerNamed', 
+  'name':name,
+  'isGM':player.isGM
+ }
+
+
+
+_____________________fuck this shit I'm out_____________________
+server to client:
+
+{
+	'message':'error',
+	'error':'Too few liers for so many guessers'
+}
+
+{
+	'message':'error',
+	'error':'No guessers found'
+}
+
+{
+	'message':'error',
+	'error':'no such player '+playerName
+}
+
+{
+	'message':'error',
+	'error':'No liers left for ''has no topics left'
+}
+
+{
+	'message':'error',
+	'error':'not a GM'
+}
+
+{
+	'message':'error',
+	'error':'unknown message type'
+}
+
+{
+	'message':'error',
+	'error':'no such player'
+}

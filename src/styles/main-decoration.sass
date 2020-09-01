@@ -1,0 +1,61 @@
+@import '../constants/styles/fonts.sass'
+@import '../constants/styles/colors.sass'
+@import '../constants/styles/media-data.sass'
+
+*, body, p
+  margin: 0px
+  padding: 0px
+
+body
+  font-family: $main-font
+
+ul, nav ul
+  list-style: none
+  margin: 0px
+  padding: 0px
+
+.hidden
+  display: none
+
+input
+  font-family: $main-font
+  background: $white
+  border-radius: 2px
+  font-size: 19px
+  padding-top: 5px
+  padding-bottom: 5px
+  &:focus
+    background: $light-green
+  &:hover
+    -webkit-transition: all 0.3s
+    -moz-transition:    all 0.3s
+    -ms-transition:     all 0.3s
+    -o-transition:      all 0.3s
+    transition:         all 0.3s
+  &::placeholder
+    color: $grey
+
+.input
+  padding-left: 10px
+  padding-right: 10px
+
+.button
+  padding-left: 25px
+  padding-right: 25px
+
+.green-border
+  border: 1px solid $green
+  &:hover
+    background: $light-green
+
+.red-border
+  border: 1px solid $red
+  &:hover
+    background: $light-red
+
+.margin-left-ten
+  margin-left: 10px
+
+.main-content-container
+  display: flex
+  justify-content: center
