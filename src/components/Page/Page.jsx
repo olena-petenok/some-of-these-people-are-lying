@@ -10,11 +10,12 @@ import './page.sass';
 import {
   HOSTNAME,
   ACTION_RECEIVED_USERDATA, ACTION_RECEIVED_PLAYERS, ACTION_RECEIVED_TOPICS,
-  ACTION_RECEIVED_START_GAME, ACTION_RECEIVED_END_GAME
+  ACTION_RECEIVED_START_GAME, ACTION_RECEIVED_END_GAME, ACTION_RECEIVED_SERVER_ERROR
 } from '../../constants/strings.js';
 
 import {
   parsePlayers, parseTopics,
+  filterPlayersByInTheGame,
   sortPlayers, sortPlayersByScore, filterPlayersByIsOnline,
   generateMessageAboutUser, generateMessageAboutTopic, generateMessageGameStarted,
   generateMessageGameEnded, generateMessageChangeUserScore
@@ -67,7 +68,10 @@ function Page(props) {
 
   const setGameStates = data => {
     setTopicOfTheGame(data.topic);
-    setPlayersInTheGame(sortPlayersByScore(parsePlayers(data.players)));
+    
+    // players are false here for whatever reason
+    // let guessers = filterPlayersByInTheGame(data.guessers, players);
+    // setPlayersInTheGame(sortPlayersByScore(guessers));
     setIsGameOn(true);
   }
 
@@ -78,6 +82,7 @@ function Page(props) {
       case ACTION_RECEIVED_TOPICS: { setUserTopics(parseTopics(action)); } break;
       case ACTION_RECEIVED_START_GAME: { setGameStates(action); } break;
       case ACTION_RECEIVED_END_GAME: { setGameStatesToDefault(); } break;
+      case ACTION_RECEIVED_SERVER_ERROR: { console.log(action.error); } break;
       default: console.log("invalid action");
     }
   }
@@ -110,12 +115,15 @@ function Page(props) {
   const changeUserScore = (userNickname, score) => { sendMessageThroughWebSocket(generateMessageChangeUserScore(userNickname, score)); }
 
   const startTheSelectionOfThePlayersForTheGame = () => { setIsGameMasterStartsTheGame(true); }
-  const parseAndApplySelectedPlayers = data => {
-    setIsGameMasterStartsTheGame(false);
 
-    console.log("here");
+  const sendAmountOfRandomPlayersThroughWebSocket = data => {
+    console.log(generateMessageGameStarted(data));
+    setIsGameMasterStartsTheGame(false);
+    sendMessageThroughWebSocket(generateMessageGameStarted(data));
+  }
+
+  const parseAndApplySelectedPlayers = data => {
     console.log(data);
-    // sendMessageThroughWebSocket(generateMessageGameStarted(data));
   }
 
   return (
@@ -126,7 +134,8 @@ function Page(props) {
                     userAddTopic={userAddTopic} userIntroduction={userIntroduction}
                     isGameOn={isGameOn} endGame={endGame} startGame={startTheSelectionOfThePlayersForTheGame}
                     isGameMasterStartsTheGame={isGameMasterStartsTheGame} />
-      { isGameMasterStartsTheGame && <GameMasterStartsTheGame parseAndApplySelectedPlayers={parseAndApplySelectedPlayers}
+      { isGameMasterStartsTheGame && <GameMasterStartsTheGame sendAmountOfRandomPlayersThroughWebSocket={sendAmountOfRandomPlayersThroughWebSocket}
+                                                              parseAndApplySelectedPlayers={parseAndApplySelectedPlayers}
                                                               setIsGameMasterStartsTheGame={setIsGameMasterStartsTheGame}
                                                               players={filterPlayersByIsOnline(players)} /> }
       { isGameOn && <GameIsOn topic={topicOfTheGame} playersInTheGame={playersInTheGame}

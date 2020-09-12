@@ -23,6 +23,21 @@ export const parseTopics = data => {
   return result;
 }
 
+export const filterPlayersByInTheGame = (guessers, players) => {
+  let playersInTheGame = [];
+  console.log(guessers);
+  console.log(players);
+  players.forEach(item => {
+    for (guesser of guessers) {
+      if (guesser === item.userNickname) {
+        playersInTheGame.push(item);
+        break;
+      }
+    }
+  });
+  return playersInTheGame;
+}
+
 // sorting and filtering algorithms
 export const sortPlayersByScore = data => data.sort((a, b) =>
   (a.userScore === b.userScore) ? 0 : (a.userScore > b.userScore) ? -1 : 1);

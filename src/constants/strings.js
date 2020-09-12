@@ -1,5 +1,6 @@
 // hostName
-export const HOSTNAME = "";
+export const HOSTNAME_OLEG = "infiny.ddns.net:50002";
+export const HOSTNAME = "212.201.71.26:50002";
 
 // button
 export const BUTTON_OK = "Ok";
@@ -8,6 +9,8 @@ export const BUTTON_CONNECT = "Connect";
 export const BUTTON_DISCONNECT = "Disconnect";
 export const BUTTON_START_GAME = "Start Game";
 export const BUTTON_END_GAME = "End Game";
+export const BUTTON_SEND_AMOUNT_OF_PLAYERS = "Send amount of players";
+export const BUTTON_SEND_SELECTED_PLAYERS = "Send selected players";
 
 // input
 export const INPUT_DEFAULT = "Input something";
@@ -39,6 +42,7 @@ export const ACTION_RECEIVED_PLAYERS = "players";
 export const ACTION_RECEIVED_TOPICS = "topics";
 export const ACTION_RECEIVED_START_GAME = "startRound";
 export const ACTION_RECEIVED_END_GAME = "endRound";
+export const ACTION_RECEIVED_SERVER_ERROR = "error";
 
 // caption
 export const CAPTION_PLAYERS = "Players";

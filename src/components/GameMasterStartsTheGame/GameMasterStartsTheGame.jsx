@@ -6,22 +6,39 @@ import OnlinePlayersForGameMasterToChoose from '../OnlinePlayersForGameMasterToC
 
 import './game-master-starts-the-game.sass';
 
-import { BUTTON_CANCEL, INPUT_AMOUNT_OF_PLAYERS } from '../../constants/strings.js';
+import {
+  BUTTON_SEND_AMOUNT_OF_PLAYERS,
+  BUTTON_SEND_SELECTED_PLAYERS,
+  BUTTON_CANCEL,
+  INPUT_AMOUNT_OF_PLAYERS
+} from '../../constants/strings.js';
 
 // import {  } from '../../utils/helper.js';
 
 function ControlPanelForGameStarting(props) {
-  const { onOkButtonClick, onCancelButtonClick, players } = props;
+  const {
+    onStartGameWithSelectedPlayersButtonClick,
+    onStartGameWithRandomPlayersButtonClick,
+    onCancelButtonClick,
+    players
+  } = props;
+
   return (
     <section className="main-content-container">
-      <Button parentFunction={onOkButtonClick} decoration={"green-border"} />
-      <Button parentFunction={onCancelButtonClick} buttonValue={BUTTON_CANCEL} decoration={'red-border margin-left-ten'} />
+      <Button parentFunction={onStartGameWithRandomPlayersButtonClick} buttonValue={BUTTON_SEND_AMOUNT_OF_PLAYERS} decoration={"green-border"} />
+      <Button parentFunction={onStartGameWithSelectedPlayersButtonClick} buttonValue={BUTTON_SEND_SELECTED_PLAYERS} decoration={"green-border"} />
+      <Button parentFunction={onCancelButtonClick}  buttonValue={BUTTON_CANCEL} decoration={'red-border margin-left-ten'} />
     </section>
   );
 }
 
 function GameMasterStartsTheGame(props) {
-  const { parseAndApplySelectedPlayers, setIsGameMasterStartsTheGame, players } = props;
+  const {
+    sendAmountOfRandomPlayersThroughWebSocket,
+    parseAndApplySelectedPlayers,
+    setIsGameMasterStartsTheGame,
+    players
+  } = props;
 
   // regular expression for the numbers
   const [amountOfPlayers, setAmountOfPlayers] = useState("");
@@ -29,9 +46,19 @@ function GameMasterStartsTheGame(props) {
 
   const onCancelButtonClick = event => { setIsGameMasterStartsTheGame(false); }
 
-  const onOkButtonClick = event => {
-    // console.log(`amountOfPlayers = ${amountOfPlayers}`);
-    // parseAndApplySelectedPlayers();
+  const onStartGameWithRandomPlayersButtonClick = event => {
+    if (amountOfPlayers !== "") {
+      sendAmountOfRandomPlayersThroughWebSocket(amountOfPlayers);
+      // if (amountOfPlayers < players.length - 2) {
+      //   // validate data and probably parse int // console.log(`amountOfPlayers = ${amountOfPlayers}`);
+      // } else {
+      //   // tell user he's stupid
+      // }
+    }
+  }
+
+  const onStartGameWithSelectedPlayersButtonClick = event => {
+    parseAndApplySelectedPlayers("test");
   }
 
   return (
@@ -42,7 +69,9 @@ function GameMasterStartsTheGame(props) {
                placeholder={INPUT_AMOUNT_OF_PLAYERS} value={amountOfPlayers} />
         <OnlinePlayersForGameMasterToChoose players={players} />
       </section>
-      <ControlPanelForGameStarting onOkButtonClick={onOkButtonClick} onCancelButtonClick={onCancelButtonClick} />
+      <ControlPanelForGameStarting onStartGameWithRandomPlayersButtonClick={onStartGameWithRandomPlayersButtonClick}
+                                   onStartGameWithSelectedPlayersButtonClick={onStartGameWithSelectedPlayersButtonClick}
+                                   onCancelButtonClick={onCancelButtonClick} />
     </section>
   );
 }
